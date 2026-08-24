@@ -1,0 +1,688 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gourmet Dessert 🍯 IRESM</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ───────────────────────────────────────────
+       VARIABLES DE COLOR – PALETA PASTEL MIELERÍA
+    ─────────────────────────────────────────────*/
+    :root {
+      --bg:           #FFF8F9;
+      --pink-soft:    #F9C4D2;
+      --pink-medium:  #F4A7BB;
+      --pink-dark:    #E88BA4;
+      --green-soft:   #C8ECC0;
+      --green-medium: #A8DFAA;
+      --honey:        #FFE0A3;
+      --honey-dark:   #F5C87A;
+      --white:        #FFFFFF;
+      --text-dark:    #4A2C3A;
+      --text-mid:     #7B4F60;
+      --text-light:   #B08A97;
+      --shadow:       rgba(244, 167, 187, 0.25);
+      --radius:       18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      min-height: 100vh;
+    }
+
+    /* ── NAVBAR ─────────────────────────────── */
+    header {
+      background: var(--white);
+      border-bottom: 3px solid var(--pink-soft);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 14px var(--shadow);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon { font-size: 2rem; }
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--pink-dark);
+      line-height: 1.1;
+    }
+    .logo-sub {
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: var(--text-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    nav a {
+      color: var(--text-mid);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.06em;
+      margin-left: 28px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--pink-dark); }
+    .nav-badge {
+      background: var(--green-soft);
+      color: var(--text-dark);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.75rem;
+      margin-left: 6px;
+    }
+
+    /* ── HERO / DECORACIÓN HONEYCOMB ─────────── */
+    .hero-strip {
+      background: linear-gradient(135deg, var(--pink-soft) 0%, var(--honey) 50%, var(--green-soft) 100%);
+      text-align: center;
+      padding: 38px 20px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-strip::before {
+      content: "🍯🌸🍰🌿🧁🌸🍯";
+      font-size: 1.8rem;
+      position: absolute;
+      top: 6px; left: 0; right: 0;
+      opacity: 0.18;
+      letter-spacing: 14px;
+    }
+    .hero-strip h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--text-dark);
+      text-shadow: 0 1px 3px rgba(255,255,255,0.6);
+    }
+    .hero-strip p {
+      margin-top: 8px;
+      font-size: 0.95rem;
+      color: var(--text-mid);
+      font-weight: 300;
+    }
+    .ley-badge {
+      display: inline-block;
+      margin-top: 14px;
+      background: var(--white);
+      border: 1.5px solid var(--pink-medium);
+      border-radius: 999px;
+      padding: 5px 18px;
+      font-size: 0.75rem;
+      color: var(--text-mid);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── CONTENEDOR GENERAL ─────────────────── */
+    main { max-width: 1100px; margin: 0 auto; padding: 40px 20px 80px; }
+
+    /* ── SECCIÓN: PRODUCTO DESTACADO ─────────── */
+    .featured-section {
+      margin-bottom: 60px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--text-dark);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: "";
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(to right, var(--pink-soft), transparent);
+      border-radius: 4px;
+    }
+
+    /* CAROUSEL BOX */
+    .carousel-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .carousel-arrow {
+      background: var(--white);
+      border: 2.5px solid var(--pink-medium);
+      color: var(--pink-dark);
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px var(--shadow);
+      user-select: none;
+    }
+    .carousel-arrow:hover {
+      background: var(--pink-soft);
+      transform: scale(1.08);
+    }
+
+    .carousel-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 2.5px solid var(--pink-soft);
+      box-shadow: 0 6px 28px var(--shadow);
+      width: 360px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      position: relative;
+    }
+    .carousel-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px var(--shadow);
+    }
+
+    .product-image-box {
+      width: 100%;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7rem;
+      background: linear-gradient(160deg, var(--honey) 0%, var(--pink-soft) 100%);
+      position: relative;
+      transition: background 0.4s;
+    }
+    .product-badge {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: var(--green-soft);
+      color: var(--text-dark);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .carousel-info {
+      padding: 20px 24px 24px;
+      text-align: center;
+    }
+    .carousel-product-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .carousel-product-desc {
+      font-size: 0.84rem;
+      color: var(--text-light);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .carousel-price {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--pink-dark);
+      font-family: 'Playfair Display', serif;
+      transition: opacity 0.3s;
+    }
+    .carousel-price span {
+      font-size: 1rem;
+      color: var(--text-light);
+      font-weight: 400;
+      font-family: 'Lato', sans-serif;
+      margin-left: 4px;
+    }
+    .btn-ver {
+      display: inline-block;
+      margin-top: 16px;
+      background: linear-gradient(135deg, var(--pink-medium), var(--pink-dark));
+      color: var(--white);
+      border: none;
+      border-radius: 999px;
+      padding: 10px 30px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      box-shadow: 0 3px 12px rgba(232,139,164,0.35);
+    }
+    .btn-ver:hover { transform: scale(1.04); }
+
+    /* Dots indicadores */
+    .carousel-dots {
+      display: flex; justify-content: center; gap: 8px; margin-top: 18px;
+    }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--pink-soft);
+      border: 2px solid var(--pink-medium);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .dot.active { background: var(--pink-dark); transform: scale(1.25); }
+
+    /* ── SECCIÓN: TODOS LOS PRODUCTOS ─────────── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 22px;
+    }
+
+    .product-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 2px solid var(--pink-soft);
+      box-shadow: 0 3px 14px var(--shadow);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 28px var(--shadow);
+      border-color: var(--pink-medium);
+    }
+    .product-card-img {
+      height: 150px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+      background: linear-gradient(160deg, var(--honey) 0%, var(--green-soft) 100%);
+    }
+    .product-card-body {
+      padding: 14px 16px 18px;
+    }
+    .product-card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .product-card-desc {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+    .product-card-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--pink-dark);
+      font-family: 'Playfair Display', serif;
+    }
+    .product-card-tag {
+      display: inline-block;
+      background: var(--green-soft);
+      color: var(--text-dark);
+      font-size: 0.68rem;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 2px 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 6px;
+    }
+
+    /* ── MODAL PRODUCTO ──────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(74,44,58,0.45);
+      z-index: 200;
+      align-items: center; justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--white);
+      border-radius: 24px;
+      border: 2.5px solid var(--pink-soft);
+      box-shadow: 0 20px 60px rgba(74,44,58,0.25);
+      max-width: 480px;
+      width: 95%;
+      overflow: hidden;
+      animation: popIn 0.25s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.88); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+    .modal-img {
+      height: 220px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 7rem;
+      background: linear-gradient(160deg, var(--honey) 0%, var(--pink-soft) 100%);
+    }
+    .modal-body { padding: 28px 32px 32px; }
+    .modal-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    .modal-desc {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .modal-price {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--pink-dark);
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 20px;
+    }
+    .modal-footer {
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .btn-pedido {
+      flex: 1;
+      background: linear-gradient(135deg, var(--green-medium), var(--green-soft));
+      color: var(--text-dark);
+      border: none; border-radius: 999px;
+      padding: 12px 20px;
+      font-weight: 700; font-size: 0.88rem;
+      cursor: pointer; letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: transform 0.18s;
+    }
+    .btn-pedido:hover { transform: scale(1.04); }
+    .btn-cerrar {
+      background: var(--bg);
+      border: 2px solid var(--pink-soft);
+      color: var(--text-mid);
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-weight: 700; font-size: 0.88rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.18s;
+    }
+    .btn-cerrar:hover { background: var(--pink-soft); }
+    .modal-ley {
+      margin-top: 16px;
+      font-size: 0.7rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    /* ── FOOTER ─────────────────────────────── */
+    footer {
+      background: var(--white);
+      border-top: 3px solid var(--pink-soft);
+      padding: 24px 40px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      line-height: 1.8;
+    }
+    footer strong { color: var(--pink-dark); }
+
+    /* ── FADE TRANSITION ─────────────────────── */
+    .fade { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 600px) {
+      .carousel-card { width: 90vw; }
+      header { padding: 12px 16px; }
+      nav a { margin-left: 14px; font-size: 0.78rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header>
+  <div class="logo">
+    <span class="logo-icon">🍯</span>
+    <div>
+      <div class="logo-text">Gourmet Dessert</div>
+      <div class="logo-sub">IRESM · Postres Artesanales</div>
+    </div>
+  </div>
+  <nav>
+    <a href="#destacado">Destacado</a>
+    <a href="#productos">Productos <span class="nav-badge">6</span></a>
+    <a href="#pedido">Pedidos</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero-strip">
+  <h1>🌸 Postres que parecen arte 🌸</h1>
+  <p>Encargá tus postres favoritos · Sacá fotos · Difundí el sabor del IRESM</p>
+  <div class="ley-badge">⚖️ Servicio amparado por la Ley 24.240 de Defensa del Consumidor · Argentina</div>
+</div>
+
+<main>
+
+  <!-- ─────── PRODUCTO DESTACADO ─────── -->
+  <section class="featured-section" id="destacado">
+    <h2 class="section-title">🍰 Producto Destacado</h2>
+
+    <div class="carousel-wrapper">
+      <button class="carousel-arrow" id="prevBtn" aria-label="Anterior">&#8249;</button>
+
+      <div class="carousel-card" id="carouselCard" onclick="openModal(currentIndex)">
+        <div class="product-image-box" id="carouselImg">
+          <span id="carouselEmoji"></span>
+          <span class="product-badge" id="carouselBadge"></span>
+        </div>
+        <div class="carousel-info">
+          <div class="carousel-product-name" id="carouselName"></div>
+          <div class="carousel-product-desc" id="carouselDesc"></div>
+          <div class="carousel-price" id="carouselPrice"></div>
+          <button class="btn-ver" onclick="event.stopPropagation(); openModal(currentIndex)">Ver producto</button>
+        </div>
+      </div>
+
+      <button class="carousel-arrow" id="nextBtn" aria-label="Siguiente">&#8250;</button>
+    </div>
+
+    <div class="carousel-dots" id="carouselDots"></div>
+  </section>
+
+  <!-- ─────── TODOS LOS PRODUCTOS ─────── -->
+  <section id="productos">
+    <h2 class="section-title">🛍️ Productos</h2>
+    <div class="products-grid" id="productsGrid"></div>
+  </section>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal-box">
+    <div class="modal-img" id="modalImg"></div>
+    <div class="modal-body">
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-footer">
+        <button class="btn-pedido" onclick="alert('¡Pedido anotado! 📝 Te contactamos por WhatsApp.')">🛒 Hacer pedido</button>
+        <button class="btn-cerrar" onclick="closeModal()">Cerrar</button>
+      </div>
+      <div class="modal-ley">⚖️ Compra protegida por la Ley 24.240 · Defensa del Consumidor Argentina</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Gourmet Dessert 🍯</strong> · Instituto Remedios Escalada de San Martín (IRESM)<br/>
+  Todos los precios expresados en pesos argentinos (ARS) e incluyen IVA.<br/>
+  Servicio amparado por la <strong>Ley 24.240 de Defensa del Consumidor</strong> de la República Argentina.<br/>
+  © 2026 Gourmet Dessert IRESM · Hecho con 🌸 por y para estudiantes
+</footer>
+
+<script>
+  // ─── CATÁLOGO DE PRODUCTOS ───────────────────────────────────────
+  const products = [
+    {
+      emoji: "🍯",
+      name: "Alfajor Dorado de Miel",
+      desc: "Galletas artesanales bañadas en miel natural con relleno de dulce de leche. Una delicia para el recreo.",
+      price: 850,
+      badge: "🔥 Más vendido",
+      bg: "linear-gradient(160deg, #FFE0A3 0%, #F9C4D2 100%)",
+    },
+    {
+      emoji: "🥐",
+      name: "Medialunas de Manteca (x4)",
+      desc: "Esponjosas y doradas. Perfectas para acompañar con un café con leche antes de clase.",
+      price: 1200,
+      badge: "🥐 Clásico",
+      bg: "linear-gradient(160deg, #FFE0A3 0%, #C8ECC0 100%)",
+    },
+    {
+      emoji: "🍩",
+      name: "Facturas Surtidas (x6)",
+      desc: "Vigilantes, cañoncitos, palmeritas y más. El surtido ideal para compartir en el aula.",
+      price: 1800,
+      badge: "👯 Para compartir",
+      bg: "linear-gradient(160deg, #F9C4D2 0%, #FFE0A3 100%)",
+    },
+    {
+      emoji: "🎂",
+      name: "Torta de Chocolate y Frutillas",
+      desc: "Húmeda por dentro, cubierta con crema y frutillas frescas. Ideal para festejar en el instituto.",
+      price: 4500,
+      badge: "🎉 Especial",
+      bg: "linear-gradient(160deg, #F4A7BB 0%, #C8ECC0 100%)",
+    },
+    {
+      emoji: "🍫",
+      name: "Churros con Dulce de Leche (x6)",
+      desc: "Crujientes por fuera, tiernos por dentro, bañados en azúcar y servidos con dulce de leche.",
+      price: 1600,
+      badge: "🌟 Favorito",
+      bg: "linear-gradient(160deg, #FFE0A3 0%, #F4A7BB 100%)",
+    },
+    {
+      emoji: "🍪",
+      name: "Palmeritas Glaseadas (x6)",
+      desc: "Hojaldradas y con glaseado de azúcar rosa. Se ven tan lindas que da pena comerlas... casi.",
+      price: 950,
+      badge: "📸 Instagrameable",
+      bg: "linear-gradient(160deg, #C8ECC0 0%, #F9C4D2 100%)",
+    },
+  ];
+
+  // ─── ESTADO DEL CAROUSEL ────────────────────────────────────────
+  let currentIndex = 0;
+
+  function formatPrice(p) {
+    return "$\u00A0" + p.toLocaleString("es-AR");
+  }
+
+  // ─── RENDER CAROUSEL ────────────────────────────────────────────
+  function renderCarousel() {
+    const p = products[currentIndex];
+    document.getElementById("carouselEmoji").textContent = p.emoji;
+    document.getElementById("carouselName").textContent  = p.name;
+    document.getElementById("carouselDesc").textContent  = p.desc;
+    document.getElementById("carouselPrice").innerHTML   =
+      formatPrice(p.price) + '<span>ARS</span>';
+    document.getElementById("carouselBadge").textContent = p.badge;
+    document.getElementById("carouselImg").style.background = p.bg;
+
+    // Dots
+    const dotsEl = document.getElementById("carouselDots");
+    dotsEl.innerHTML = "";
+    products.forEach((_, i) => {
+      const d = document.createElement("span");
+      d.className = "dot" + (i === currentIndex ? " active" : "");
+      d.onclick = () => { currentIndex = i; renderCarousel(); };
+      dotsEl.appendChild(d);
+    });
+
+    // Fade effect
+    const card = document.getElementById("carouselCard");
+    card.classList.remove("fade");
+    void card.offsetWidth;
+    card.classList.add("fade");
+  }
+
+  document.getElementById("prevBtn").onclick = () => {
+    currentIndex = (currentIndex - 1 + products.length) % products.length;
+    renderCarousel();
+  };
+  document.getElementById("nextBtn").onclick = () => {
+    currentIndex = (currentIndex + 1) % products.length;
+    renderCarousel();
+  };
+
+  // ─── RENDER GRILLA DE PRODUCTOS ─────────────────────────────────
+  function renderGrid() {
+    const grid = document.getElementById("productsGrid");
+    grid.innerHTML = "";
+    products.forEach((p, i) => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.onclick = () => openModal(i);
+      card.innerHTML = `
+        <div class="product-card-img" style="background:${p.bg}">${p.emoji}</div>
+        <div class="product-card-body">
+          <div class="product-card-name">${p.name}</div>
+          <div class="product-card-desc">${p.desc}</div>
+          <div class="product-card-price">${formatPrice(p.price)}</div>
+          <span class="product-card-tag">${p.badge}</span>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  // ─── MODAL ──────────────────────────────────────────────────────
+  function openModal(index) {
+    const p = products[index];
+    document.getElementById("modalImg").innerHTML   = p.emoji;
+    document.getElementById("modalImg").style.background = p.bg;
+    document.getElementById("modalName").textContent  = p.name;
+    document.getElementById("modalDesc").textContent  = p.desc;
+    document.getElementById("modalPrice").innerHTML   = formatPrice(p.price) + ' <span style="font-size:1rem;font-weight:400;color:var(--text-light);font-family:Lato,sans-serif">ARS</span>';
+    document.getElementById("modalOverlay").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeModal() {
+    document.getElementById("modalOverlay").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  function closeModalOnOverlay(e) {
+    if (e.target === document.getElementById("modalOverlay")) closeModal();
+  }
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+  // ─── Teclas del teclado para el carousel ───────────────────────
+  document.addEventListener("keydown", e => {
+    if (document.getElementById("modalOverlay").classList.contains("open")) return;
+    if (e.key === "ArrowLeft")  { currentIndex = (currentIndex - 1 + products.length) % products.length; renderCarousel(); }
+    if (e.key === "ArrowRight") { currentIndex = (currentIndex + 1) % products.length; renderCarousel(); }
+  });
+
+  // ─── INIT ───────────────────────────────────────────────────────
+  renderCarousel();
+  renderGrid();
+</script>
+</body>
+</html>

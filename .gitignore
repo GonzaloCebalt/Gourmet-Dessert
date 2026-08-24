@@ -1,0 +1,48 @@
+﻿# Entornos virtuales
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# Python compilado
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+
+# Distribucion / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# MyPy
+.mypy_cache/
