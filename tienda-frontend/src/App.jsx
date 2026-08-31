@@ -5,14 +5,17 @@ import './App.css'
 
 function App() {
   const [productos, setProductos] = useState([])
-  const [cargando, setCargando] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
+    setIsLoading(true)
+    setError(null)
+
     getProductos()
       .then((data) => setProductos(data))
-      .catch((err) => setError(err.message))
-      .finally(() => setCargando(false))
+      .catch((err) => setError("No se pudieron cargar los productos. Por favor, intentá de nuevo más tarde."))
+      .finally(() => setIsLoading(false))
   }, [])
 
   return (
@@ -41,22 +44,29 @@ function App() {
       <main className="page-main">
         <h2 className="section-title">🛍️ Productos</h2>
 
-        {cargando && <p className="estado-msg">Cargando productos... 🍰</p>}
-        {error    && <p className="estado-msg estado-error">Error: {error}</p>}
+        {isLoading && <p className="estado-msg">Cargando productos... 🍰</p>}
 
-        <div className="catalogo">
-          {productos.map((producto) => (
-            <ProductCard
-              key={producto.id}
-              id={producto.id}
-              nombre={producto.nombre}
-              precio_final={producto.precio_final}
-              cuotas_cantidad={producto.cuotas_cantidad}
-              cuotas_valor={producto.cuotas_valor}
-              garantia_meses={producto.garantia_meses}
-            />
-          ))}
-        </div>
+        {error && (
+          <div className="estado-msg estado-error" style={{ textAlign: "center", padding: "20px" }}>
+            <p>⚠️ {error}</p>
+          </div>
+        )}
+
+        {!isLoading && !error && (
+          <div className="catalogo">
+            {productos.map((producto) => (
+              <ProductCard
+                key={producto.id}
+                id={producto.id}
+                nombre={producto.nombre}
+                precio_final={producto.precio_final}
+                cuotas_cantidad={producto.cuotas_cantidad}
+                cuotas_valor={producto.cuotas_valor}
+                garantia_meses={producto.garantia_meses}
+              />
+            ))}
+          </div>
+        )}
       </main>
 
       {/* ── FOOTER ── */}
