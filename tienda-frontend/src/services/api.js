@@ -1,4 +1,4 @@
-const BASE_URL = "/api";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function getProductos({ page = 0, limit = 2, nombre = "" } = {}) {
   // Calculamos 'skip' a partir de 'page' y 'limit'

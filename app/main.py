@@ -1,4 +1,5 @@
 from fastapi import FastAPI, status, Depends, Response
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
@@ -15,6 +16,23 @@ app = FastAPI(
     title="Gourmet Dessert IRESM - API",
     description="API oficial del e-commerce de postres artesanales Gourmet Dessert.",
     version="1.0.0",
+)
+
+# Configuración de CORS (Parte 4 de la consigna)
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["X-Total-Count"],
 )
 
 static_dir = os.path.join(os.path.dirname(__file__), "static")
