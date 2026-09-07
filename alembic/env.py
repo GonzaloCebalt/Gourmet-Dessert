@@ -1,4 +1,4 @@
-from logging.config import fileConfig
+﻿from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
@@ -9,8 +9,9 @@ from alembic import context
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-from app.database import Base
-from app import models  # noqa: F401 — necesario para que SQLAlchemy registre las tablas
+from app.db.database import Base
+from app.core.config import settings
+from app import models  # noqa: F401 â€” necesario para que SQLAlchemy registre las tablas
 
 config = context.config
 
@@ -76,3 +77,4 @@ if context.is_offline_mode():
     run_migrations_offline()
 else:
     run_migrations_online()
+

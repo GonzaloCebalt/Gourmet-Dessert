@@ -1,5 +1,6 @@
-﻿from sqlalchemy import Column, Integer, String, Float, ForeignKey
+﻿from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 from app.db.database import Base
 
 class Usuario(Base):
@@ -8,8 +9,10 @@ class Usuario(Base):
     id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String)
     email = Column(String, unique=True, index=True)
-    password_hash = Column(String)
-    rol = Column(String)
+    hashed_password = Column(String)
+    rol = Column(String, default="customer")
+    acepto_tratamiento = Column(Boolean, default=False)
+    fecha_consentimiento = Column(DateTime(timezone=True), server_default=func.now())
 
     pedidos = relationship("Pedido", back_populates="usuario")
 
@@ -46,4 +49,3 @@ class ItemPedido(Base):
 
     pedido = relationship("Pedido", back_populates="items")
     producto = relationship("Producto")
-

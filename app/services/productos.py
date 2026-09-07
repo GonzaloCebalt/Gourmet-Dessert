@@ -1,8 +1,9 @@
 from sqlalchemy.orm import Session
-from app import models, schemas
+from app import models
+from app.schemas.producto import ProductoCreate
 
 
-def crear_producto(db: Session, producto: schemas.ProductoCreate) -> models.Producto:
+def crear_producto(db: Session, producto: ProductoCreate) -> models.Producto:
     """Inserta un nuevo producto en la base de datos y lo devuelve."""
     nuevo = models.Producto(**producto.model_dump())
     db.add(nuevo)

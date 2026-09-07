@@ -6,7 +6,7 @@ import os
 
 from app.db.database import engine, Base
 from app import models
-from app.routers import productos
+from app.routers import productos, auth
 from app.core.config import settings
 
 # Crea tablas si no existen (respaldo; las migraciones son via Alembic)
@@ -31,6 +31,7 @@ static_dir = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 app.include_router(productos.router)
+app.include_router(auth.router)
 
 @app.get("/", summary="Bienvenida a la API", tags=["General"])
 async def root():
@@ -44,3 +45,4 @@ async def root():
 async def serve_frontend():
     index_path = os.path.join(os.path.dirname(__file__), "static", "index.html")
     return FileResponse(index_path)
+
