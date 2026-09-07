@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, status, Depends, Response
+from fastapi import APIRouter, status, Depends, Response
 from sqlalchemy.orm import Session
 from app.schemas import producto as schemas
 from app.services import productos as productos_service
@@ -17,7 +17,7 @@ async def get_productos(
     limit: int = 10,
     nombre: str | None = None,
     precio_max: float | None = None,
-    db: Session = Depends(get_db), current_user=Depends(require_admin),
+    db: Session = Depends(get_db),
 ):
     total_count = productos_service.contar_productos(db, nombre, precio_max)
     response.headers["X-Total-Count"] = str(total_count)
