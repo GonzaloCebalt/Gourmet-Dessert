@@ -1,34 +1,26 @@
-from fastapi import FastAPI, status, Depends, Response
+﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from sqlalchemy.orm import Session
 import os
 
-from .database import engine, Base, get_db
-from . import models, schemas
-from .services import productos as productos_service
+from app.db.database import engine, Base
+from app import models
+from app.routers import productos
+from app.core.config import settings
 
 # Crea tablas si no existen (respaldo; las migraciones son via Alembic)
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="Gourmet Dessert IRESM - API",
+    title=settings.PROJECT_NAME,
     description="API oficial del e-commerce de postres artesanales Gourmet Dessert.",
     version="1.0.0",
 )
 
-# Configuración de CORS (Parte 4 de la consigna)
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "http://localhost:5174",
-    "http://127.0.0.1:5174",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -38,54 +30,15 @@ app.add_middleware(
 static_dir = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
+app.include_router(productos.router)
 
 @app.get("/", summary="Bienvenida a la API", tags=["General"])
 async def root():
     return {
-        "bienvenida": "¡Bienvenidos a Gourmet Dessert! 🍰",
+        "bienvenida": f"¡Bienvenidos a {settings.PROJECT_NAME}! 🍰",
         "frontend": "/ui",
         "documentacion": "/docs",
     }
-
-
-@app.get(
-    "/productos",
-    response_model=list[schemas.ProductoOut],
-    summary="Listado de productos",
-    tags=["Productos"],
-)
-async def get_productos(
-    response: Response,
-    skip: int = 0,
-    limit: int = 10,
-    nombre: str | None = None,
-    precio_max: float | None = None,
-    db: Session = Depends(get_db),
-):
-    # Obtenemos el total de productos sin paginar y lo metemos en los Headers
-    total_count = productos_service.contar_productos(db, nombre, precio_max)
-    response.headers["X-Total-Count"] = str(total_count)
-    
-    return productos_service.listar_productos(db, skip, limit, nombre, precio_max)
-
-
-@app.post(
-    "/productos",
-    response_model=schemas.ProductoOut,
-    status_code=status.HTTP_201_CREATED,
-    summary="Crear un nuevo producto",
-    tags=["Productos"],
-)
-async def create_producto(
-    producto: schemas.ProductoCreate,
-    db: Session = Depends(get_db),
-):
-    """
-    Crea un nuevo producto en el catálogo.
-    El campo **id** es asignado automáticamente por la base de datos.
-    """
-    return productos_service.crear_producto(db, producto)
-
 
 @app.get("/ui", include_in_schema=False)
 async def serve_frontend():
