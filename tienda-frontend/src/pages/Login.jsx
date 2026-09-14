@@ -46,8 +46,8 @@ export default function Login({ onLoginExitoso }) {
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#3D2B1F]/20" 
-              placeholder="tu@email.com" className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#3D2B1F]/20 select-text"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#3D2B1F]/20 select-text" 
+              placeholder="tu@email.com"
             />
           </div>
           <div>
@@ -57,8 +57,8 @@ export default function Login({ onLoginExitoso }) {
               required
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#3D2B1F]/20" 
-              placeholder="••••••••" className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#3D2B1F]/20 select-text"
+              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#3D2B1F]/20 select-text" 
+              placeholder="••••••••"
             />
           </div>
           <button 
@@ -68,9 +68,13 @@ export default function Login({ onLoginExitoso }) {
           >
             {cargando ? "Ingresando..." : "Entrar"}
           </button>
-        </form>`n`n        <p className="mt-8 text-center text-sm text-stone-500 font-semibold">`n          ¿No tenes cuenta?{" "}`n          <Link to="/register" className="text-primary-brown hover:underline">Crea una nueva</Link>`n        </p>
+        </form>
+
+        <p className="mt-8 text-center text-sm text-stone-500 font-semibold">
+          No tenes cuenta?{" "}
+          <Link to="/register" className="text-primary-brown hover:underline">Crea una nueva</Link>
+        </p>
       </div>
     </div>
   );
 }
-
