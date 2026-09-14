@@ -29,10 +29,18 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-        
+
     user = db.query(models.Usuario).filter(models.Usuario.email == email).first()
     if user is None:
         raise credentials_exception
+
+    # Chequeo de cuenta activa: usuarios dados de baja no pueden usar tokens viejos
+    if not user.activo:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Esta cuenta fue dada de baja",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     return user
 
 def require_admin(current_user: models.Usuario = Depends(get_current_user)):
