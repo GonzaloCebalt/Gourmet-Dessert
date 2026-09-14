@@ -72,3 +72,13 @@ export async function getMisPedidos() {
   if (!response.ok) throw new Error("No se pudieron cargar tus pedidos.");
   return response.json();
 }
+
+export async function updateStock(producto_id, stock) {
+  const response = await fetch(`${BASE_URL}/productos/${producto_id}/stock`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ stock }),
+  });
+  if (!response.ok) throw new Error("Error al actualizar el stock");
+  return response.json();
+}

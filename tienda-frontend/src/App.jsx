@@ -101,7 +101,22 @@ function Catalogo({ usuario, onLogout }) {
             {productos.length === 0
               ? <div className="text-center py-20 bg-white rounded-gourmet shadow-sm"><p className="text-stone-400 text-lg">No encontramos postres que coincidan.</p></div>
               : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  {productos.map(p => <ProductCard key={p.id} id={p.id} nombre={p.nombre} precio_final={p.precio_final} cuotas_cantidad={p.cuotas_cantidad} cuotas_valor={p.cuotas_valor} garantia_meses={p.garantia_meses} stock={p.stock} />)}
+                  {productos.map(p => (
+                    <ProductCard
+                      key={p.id}
+                      id={p.id}
+                      nombre={p.nombre}
+                      precio_final={p.precio_final}
+                      cuotas_cantidad={p.cuotas_cantidad}
+                      cuotas_valor={p.cuotas_valor}
+                      garantia_meses={p.garantia_meses}
+                      stock={p.stock}
+                      usuario={usuario}
+                      onUpdateStock={(newStock) => {
+                        setProductos(prev => prev.map(prod => prod.id === p.id ? { ...prod, stock: newStock } : prod));
+                      }}
+                    />
+                  ))}
                 </div>
             }
             <div className="flex justify-center items-center space-x-6 mt-16">
