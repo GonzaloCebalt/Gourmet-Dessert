@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom"
 import { getProductos, getMe } from "./services/api"
 import ProductCard from "./components/ProductCard"
@@ -30,7 +30,7 @@ function Navbar({ usuario, onLogout }) {
                     ? 'bg-amber-100 text-amber-800 border border-amber-200'
                     : 'bg-stone-100 text-stone-600 border border-stone-200'
                 }`}>
-                  {usuario.rol === 'admin' ? 'ðŸ‘‘ Admin' : 'ðŸ‘¤ Cliente'}
+                  {usuario.rol === 'admin' ? '\u{1F451} Admin' : '\u{1F464} Cliente'}
                 </span>
               </div>
               <Link to="/mis-pedidos" className="font-semibold text-sm hover:text-stone-500 transition">Mis Pedidos</Link>
@@ -81,7 +81,7 @@ function Catalogo({ usuario, onLogout }) {
             <span className="uppercase tracking-[0.3em] text-[10px] font-bold text-[#3D2B1F]/60">Coleccion Premium 2024</span>
             <h2 className="text-5xl font-bold mt-2 mb-6 max-w-md leading-tight">El arte de enganar al paladar.</h2>
           </div>
-          <div className="text-[12rem] opacity-20 absolute -right-10 md:static md:opacity-100">ðŸ°</div>
+          <div className="text-[12rem] opacity-20 absolute -right-10 md:static md:opacity-100">🍰</div>
         </div>
 
         <div className="mb-6 flex justify-between items-center">
@@ -93,8 +93,8 @@ function Catalogo({ usuario, onLogout }) {
           </div>
         </div>
 
-        {isLoading && <div className="text-center py-20"><div className="animate-spin text-4xl">ðŸ¯</div><p className="text-stone-400 mt-4 uppercase tracking-widest text-sm font-bold">Preparando delicias...</p></div>}
-        {error && <div className="bg-red-50 text-red-500 p-8 rounded-gourmet text-center border border-red-100"><p className="font-bold">âš ï¸ {error}</p></div>}
+        {isLoading && <div className="text-center py-20"><div className="animate-spin text-4xl">🍯</div><p className="text-stone-400 mt-4 uppercase tracking-widest text-sm font-bold">Preparando delicias...</p></div>}
+        {error && <div className="bg-red-50 text-red-500 p-8 rounded-gourmet text-center border border-red-100"><p className="font-bold">⚠️ {error}</p></div>}
 
         {!isLoading && !error && (
           <>
