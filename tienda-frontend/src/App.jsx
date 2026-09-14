@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route, Link, useNavigate } from "react-router-dom"
 import { getProductos, getMe } from "./services/api"
 import ProductCard from "./components/ProductCard"
@@ -22,6 +22,16 @@ function Navbar({ usuario, onLogout }) {
         <div className="flex-1 flex justify-end items-center space-x-4">
           {usuario ? (
             <>
+              <div className="flex items-center gap-2 mr-2">
+                <span className="text-xs font-semibold text-stone-700 hidden sm:inline">{usuario.nombre}</span>
+                <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${
+                  usuario.rol === 'admin'
+                    ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                    : 'bg-stone-100 text-stone-600 border border-stone-200'
+                }`}>
+                  {usuario.rol === 'admin' ? '👑 Admin' : '👤 Cliente'}
+                </span>
+              </div>
               <Link to="/mis-pedidos" className="font-semibold text-sm hover:text-stone-500 transition">Mis Pedidos</Link>
               <button onClick={onLogout} className="font-semibold text-sm hover:text-stone-500 transition">Salir</button>
             </>
@@ -90,7 +100,7 @@ function Catalogo({ usuario, onLogout }) {
             {productos.length === 0
               ? <div className="text-center py-20 bg-white rounded-gourmet shadow-sm"><p className="text-stone-400 text-lg">No encontramos postres que coincidan.</p></div>
               : <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  {productos.map(p => <ProductCard key={p.id} id={p.id} nombre={p.nombre} precio_final={p.precio_final} cuotas_cantidad={p.cuotas_cantidad} cuotas_valor={p.cuotas_valor} garantia_meses={p.garantia_meses} />)}
+                  {productos.map(p => <ProductCard key={p.id} id={p.id} nombre={p.nombre} precio_final={p.precio_final} cuotas_cantidad={p.cuotas_cantidad} cuotas_valor={p.cuotas_valor} garantia_meses={p.garantia_meses} stock={p.stock} />)}
                 </div>
             }
             <div className="flex justify-center items-center space-x-6 mt-16">
