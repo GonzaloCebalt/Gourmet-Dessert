@@ -1,0 +1,28 @@
+﻿from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+from typing import List
+from app.dependencies import get_db, get_current_user
+from app import models
+from app.schemas.pedido import PedidoCreate, PedidoOut
+from app.services import pedido_service
+
+router = APIRouter(prefix="/pedidos", tags=["Pedidos"])
+
+@router.post("/", response_model=PedidoOut, status_code=201)
+def checkout(datos: PedidoCreate, db: Session = Depends(get_db), current_user: models.Usuario = Depends(get_current_user)):
+    return pedido_service.crear_pedido(db, current_user, datos)
+
+@router.get("/mios", response_model=List[PedidoOut])
+def mis_pedidos(db: Session = Depends(get_db), current_user: models.Usuario = Depends(get_current_user)):
+    return db.query(models.Pedido).filter(
+        models.Pedido.usuario_id == current_user.id
+    ).order_by(models.Pedido.creado_en.desc()).all()
+
+@router.get("/{pedido_id}", response_model=PedidoOut)
+def get_pedido(pedido_id: int, db: Session = Depends(get_db), current_user: models.Usuario = Depends(get_current_user)):
+    pedido = db.query(models.Pedido).filter(models.Pedido.id == pedido_id).first()
+    if not pedido:
+        raise HTTPException(status_code=404, detail="Pedido no encontrado")
+    if pedido.usuario_id != current_user.id and current_user.rol != "admin":
+        raise HTTPException(status_code=404, detail="Pedido no encontrado")
+    return pedido

@@ -1,4 +1,4 @@
-﻿from sqlalchemy import Column, Integer, String, Float, ForeignKey, Boolean, DateTime
+﻿from sqlalchemy import Column, Integer, String, Float, Numeric, ForeignKey, Boolean, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.db.database import Base
@@ -32,11 +32,12 @@ class Pedido(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     usuario_id = Column(Integer, ForeignKey("usuarios.id"))
-    estado = Column(String)
-    total = Column(Float)
+    estado = Column(String, default="pendiente")
+    total = Column(Numeric(12, 2))
+    creado_en = Column(DateTime(timezone=True), server_default=func.now())
 
     usuario = relationship("Usuario", back_populates="pedidos")
-    items = relationship("ItemPedido", back_populates="pedido")
+    items = relationship("ItemPedido", back_populates="pedido", cascade="all, delete-orphan")
 
 class ItemPedido(Base):
     __tablename__ = "items_pedido"
@@ -45,7 +46,7 @@ class ItemPedido(Base):
     pedido_id = Column(Integer, ForeignKey("pedidos.id"))
     producto_id = Column(Integer, ForeignKey("productos.id"))
     cantidad = Column(Integer)
-    precio_unitario = Column(Float)
+    precio_unitario = Column(Numeric(12, 2))
 
     pedido = relationship("Pedido", back_populates="items")
     producto = relationship("Producto")
