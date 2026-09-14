@@ -1,7 +1,7 @@
-﻿import { useCarrito } from "../context/CarritoContext";
+import { useCarrito } from "../context/CarritoContext";
 import { crearPedido } from "../services/api";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Carrito() {
   const { items, incrementar, decrementar, quitar, vaciar, total } = useCarrito();
@@ -27,13 +27,23 @@ export default function Carrito() {
   if (items.length === 0) return (
     <div className="container mx-auto px-6 py-20 text-center">
       <p className="text-2xl text-stone-400 font-bold mb-6">Tu carrito esta vacio</p>
-      <a href="/" className="bg-primary-brown text-white px-8 py-3 rounded-pill font-bold text-sm uppercase tracking-widest">Ver catalogo</a>
+      <Link to="/" className="bg-primary-brown text-white px-8 py-3.5 rounded-pill font-bold text-sm uppercase tracking-widest hover:bg-[#5a402e] transition inline-block">
+        ← Volver al inicio / Ver catalogo
+      </Link>
     </div>
   );
 
   return (
     <div className="container mx-auto px-6 py-10 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-8">Tu carrito</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-[#3D2B1F]">Tu carrito</h1>
+        <Link 
+          to="/" 
+          className="inline-flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-700 px-5 py-2.5 rounded-pill font-bold text-xs uppercase tracking-widest transition"
+        >
+          ← Seguir comprando
+        </Link>
+      </div>
       <div className="space-y-4 mb-8">
         {items.map(item => (
           <div key={item.id} className="bg-white rounded-2xl p-5 flex items-center justify-between shadow-sm">
