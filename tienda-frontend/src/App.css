@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 @theme {
   --color-primary-brown: #3D2B1F;
@@ -24,3 +24,21 @@
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--color-bg-creme); }
 ::-webkit-scrollbar-thumb { background: #dcd4cf; border-radius: 10px; }
+
+/* Selección de texto visible en inputs y en toda la app */
+input, textarea {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  cursor: text;
+}
+
+input::selection, textarea::selection {
+  background-color: #3D2B1F !important;
+  color: #ffffff !important;
+}
+
+::selection {
+  background-color: #3D2B1F !important;
+  color: #ffffff !important;
+}
+
