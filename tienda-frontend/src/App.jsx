@@ -5,6 +5,7 @@ import ProductCard from "./components/ProductCard"
 import RutaProtegida from "./components/RutaProtegida"
 import Carrito from "./pages/Carrito"
 import MisPedidos from "./pages/MisPedidos"
+import Login from "./pages/Login"
 import { CarritoProvider, useCarrito } from "./context/CarritoContext"
 import "./App.css"
 
@@ -25,7 +26,7 @@ function Navbar({ usuario, onLogout }) {
               <button onClick={onLogout} className="font-semibold text-sm hover:text-stone-500 transition">Salir</button>
             </>
           ) : (
-            <span className="text-sm text-stone-400">No hay sesion iniciada</span>
+            <Link to="/login" className="font-semibold text-sm hover:text-stone-500 transition">Iniciar Sesion</Link>
           )}
           <Link to="/carrito" className="relative p-2 hover:bg-stone-100 rounded-full transition">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
@@ -126,7 +127,7 @@ function App() {
     <CarritoProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Catalogo usuario={usuario} onLogout={onLogout} />} />
+          <Route path="/" element={<Catalogo usuario={usuario} onLogout={onLogout} />} />`n          <Route path="/login" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Login onLoginExitoso={() => getMe().then(setUsuario)} /></>} />
           <Route path="/carrito" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Carrito /></>} />
           <Route path="/mis-pedidos" element={<RutaProtegida><><Navbar usuario={usuario} onLogout={onLogout} /><MisPedidos /></></RutaProtegida>} />
         </Routes>
@@ -136,3 +137,4 @@ function App() {
 }
 
 export default App;
+

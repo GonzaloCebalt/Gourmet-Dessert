@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Carrito() {
-  const { items, quitar, vaciar, total } = useCarrito();
+  const { items, incrementar, decrementar, quitar, vaciar, total } = useCarrito();
   const [enviando, setEnviando] = useState(false);
   const [mensaje, setMensaje] = useState(null);
   const navigate = useNavigate();
@@ -37,13 +37,34 @@ export default function Carrito() {
       <div className="space-y-4 mb-8">
         {items.map(item => (
           <div key={item.id} className="bg-white rounded-2xl p-5 flex items-center justify-between shadow-sm">
-            <div>
+            <div className="flex-1">
               <p className="font-bold text-lg">{item.nombre}</p>
-              <p className="text-stone-400 text-sm">{item.cantidad} x ${item.precio_final.toLocaleString("es-AR")}</p>
+              <p className="text-stone-400 text-sm">Stock disponible: {item.stock}</p>
             </div>
-            <div className="flex items-center gap-4">
-              <span className="font-bold text-primary-brown">${(item.precio_final * item.cantidad).toLocaleString("es-AR")}</span>
-              <button onClick={() => quitar(item.id)} className="text-red-400 hover:text-red-600 font-bold text-lg leading-none">&times;</button>
+            
+            {/* Controles de cantidad +/- */}
+            <div className="flex items-center gap-4 bg-stone-50 rounded-full px-2 py-1 mx-4 border border-stone-100">
+              <button 
+                onClick={() => decrementar(item.id)}
+                disabled={item.cantidad <= 1}
+                className="w-8 h-8 flex items-center justify-center font-bold text-lg rounded-full hover:bg-stone-200 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                -
+              </button>
+              <span className="font-bold w-6 text-center">{item.cantidad}</span>
+              <button 
+                onClick={() => incrementar(item.id)}
+                disabled={item.cantidad >= item.stock}
+                className="w-8 h-8 flex items-center justify-center font-bold text-lg rounded-full hover:bg-stone-200 disabled:opacity-30 disabled:cursor-not-allowed"
+                title={item.cantidad >= item.stock ? "Stock maximo alcanzado" : ""}
+              >
+                +
+              </button>
+            </div>
+
+            <div className="flex items-center gap-6 min-w-[120px] justify-end">
+              <span className="font-bold text-primary-brown text-lg">${(item.precio_final * item.cantidad).toLocaleString("es-AR")}</span>
+              <button onClick={() => quitar(item.id)} className="text-red-400 hover:text-red-600 font-bold text-2xl leading-none" title="Quitar item">&times;</button>
             </div>
           </div>
         ))}
