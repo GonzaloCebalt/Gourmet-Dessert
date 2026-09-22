@@ -1,7 +1,6 @@
 ﻿from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import os
 
@@ -28,28 +27,19 @@ app.add_middleware(
     expose_headers=["X-Total-Count"],
 )
 
-static_dir = os.path.join(os.path.dirname(__file__), "static")
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
-
 app.include_router(productos.router)
 app.include_router(auth.router)
 app.include_router(pedidos.router)
 app.include_router(usuarios.router)
 
-app.mount('/static', StaticFiles(directory='uploads'), name='static')
+# /static -> carpeta uploads/ en la raiz del proyecto
+uploads_dir = os.path.join(os.getcwd(), "uploads")
+os.makedirs(uploads_dir, exist_ok=True)
+app.mount("/static", StaticFiles(directory=uploads_dir), name="static")
 
 @app.get("/", summary="Bienvenida a la API", tags=["General"])
 async def root():
     return {
-        "bienvenida": f"Â¡Bienvenidos a {settings.PROJECT_NAME}! ðŸ°",
-        "frontend": "/ui",
+        "bienvenida": f"Bienvenidos a {settings.PROJECT_NAME}!",
         "documentacion": "/docs",
     }
-
-@app.get("/ui", include_in_schema=False)
-async def serve_frontend():
-    index_path = os.path.join(os.path.dirname(__file__), "static", "index.html")
-    return FileResponse(index_path)
-
-
-
