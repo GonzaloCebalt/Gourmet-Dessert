@@ -123,3 +123,22 @@ export async function eliminarMiCuenta() {
   });
   if (!response.ok && response.status !== 204) throw new Error("Error al dar de baja la cuenta.");
 }
+
+export async function subirImagen(productoId, archivo) {
+  const fd = new FormData();
+  fd.append("archivo", archivo);
+
+  const response = await fetch(`${BASE_URL}/productos/${productoId}/imagen`, {
+    method: "POST",
+    headers: authHeaders(), // SOLO el token, el navegador arma el Content-Type multipart/form-data con el boundary
+    body: fd,
+  });
+
+  if (response.status === 403) throw new Error("No tenes permisos de administrador.");
+  if (response.status === 404) throw new Error("El producto no existe.");
+  if (response.status === 413) throw new Error("La imagen supera los 2 MB permitidos.");
+  if (response.status === 415) throw new Error("El archivo no es una imagen valida.");
+  if (!response.ok) throw new Error("Error desconocido al subir la imagen.");
+
+  return response.json();
+}

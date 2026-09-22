@@ -118,6 +118,8 @@ function Catalogo({ usuario, onLogout }) {
                       cuotas_valor={p.cuotas_valor}
                       garantia_meses={p.garantia_meses}
                       stock={p.stock}
+                      imagen_url={p.imagen_url}
+                      onUpdateImagen={(newImg) => setProductos(prev => prev.map(prod => prod.id === p.id ? { ...prod, imagen_url: newImg } : prod))}
                       usuario={usuario}
                       onUpdateStock={(newStock) => {
                         setProductos(prev => prev.map(prod => prod.id === p.id ? { ...prod, stock: newStock } : prod));
