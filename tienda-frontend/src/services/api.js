@@ -82,3 +82,44 @@ export async function updateStock(producto_id, stock) {
   if (!response.ok) throw new Error("Error al actualizar el stock");
   return response.json();
 }
+
+
+export async function revocarPedido(pedidoId) {
+  const response = await fetch(`${BASE_URL}/pedidos/${pedidoId}/revocacion`, {
+    method: "POST",
+    headers: { ...authHeaders() },
+  });
+  if (response.status === 401) throw new Error("Tu sesion vencio. Vuelve a iniciar sesion.");
+  if (response.status === 404) { const e = await response.json(); throw new Error(e.detail || "Pedido no encontrado"); }
+  if (response.status === 409) { const e = await response.json(); throw new Error(e.detail); }
+  if (!response.ok) throw new Error("Error al procesar la revocacion.");
+  return response.json();
+}
+
+export async function getMisDatos() {
+  const response = await fetch(`${BASE_URL}/usuarios/me/datos`, { headers: authHeaders() });
+  if (!response.ok) throw new Error("No se pudieron obtener tus datos.");
+  return response.json();
+}
+
+export async function exportarDatos() {
+  const response = await fetch(`${BASE_URL}/usuarios/me/exportar`, { headers: authHeaders() });
+  if (!response.ok) throw new Error("Error al exportar.");
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "mis_datos.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+export async function eliminarMiCuenta() {
+  const response = await fetch(`${BASE_URL}/usuarios/me`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
+  if (!response.ok && response.status !== 204) throw new Error("Error al dar de baja la cuenta.");
+}

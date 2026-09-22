@@ -52,6 +52,8 @@ function Navbar({ usuario, onLogout }) {
 }
 
 function Catalogo({ usuario, onLogout }) {
+  const location = useLocation();
+  const isBaja = new URLSearchParams(location.search).get("baja") === "true";
   const [productos, setProductos] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -84,6 +86,11 @@ function Catalogo({ usuario, onLogout }) {
           <div className="text-[12rem] opacity-20 absolute -right-10 md:static md:opacity-100">🍰</div>
         </div>
 
+                {isBaja && (
+          <div className="bg-blue-50 border border-blue-200 text-blue-700 px-6 py-4 rounded-xl mb-8 font-bold text-center">
+            Tu cuenta fue eliminada correctamente. Lamentamos verte partir.
+          </div>
+        )}
         <div className="mb-6 flex justify-between items-center">
           <h2 className="text-2xl font-bold">Seleccion Gourmet</h2>
           <div className="relative w-64">
@@ -127,12 +134,7 @@ function Catalogo({ usuario, onLogout }) {
           </>
         )}
       </main>
-      <footer className="bg-white border-t border-stone-100 py-20 mt-20">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="font-logo text-4xl text-[#3D2B1F] mb-6">Gourmet Dessert</h2>
-          <p className="text-stone-300 text-sm italic">"Donde la vista se confunde y el alma se deleita."</p>
-        </div>
-      </footer>
+
     </>
   );
 }
