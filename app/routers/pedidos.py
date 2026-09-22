@@ -48,4 +48,5 @@ def revocar_pedido(
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
-    return revocacion_service.revocar(db, current_user, pedido_id)
+    return revocacion_service.revocar(db, pedido_id)
+

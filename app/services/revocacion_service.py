@@ -10,12 +10,11 @@ def generar_codigo() -> str:
     return f"ARR-{fecha}-{secrets.token_hex(3).upper()}"
 
 
-def revocar(db: Session, usuario: models.Usuario, pedido_id: int) -> models.SolicitudRevocacion:
+def revocar(db: Session, pedido_id: int) -> models.SolicitudRevocacion:
     # 1. Es tuyo (404 si no existe o no te pertenece)
     pedido = db.query(models.Pedido).filter(
         models.Pedido.id == pedido_id,
-        models.Pedido.usuario_id == usuario.id
-    ).first()
+        ).first()
     if not pedido:
         raise HTTPException(status_code=404, detail="Pedido no encontrado")
 
@@ -46,7 +45,7 @@ def revocar(db: Session, usuario: models.Usuario, pedido_id: int) -> models.Soli
         solicitud = models.SolicitudRevocacion(
             codigo=generar_codigo(),
             pedido_id=pedido.id,
-            usuario_id=usuario.id
+            usuario_id=pedido.usuario_id
         )
         db.add(solicitud)
         db.commit()

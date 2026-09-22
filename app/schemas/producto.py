@@ -9,6 +9,7 @@ class ProductoCreate(BaseModel):
     cuotas_valor: float
     garantia_meses: int
     stock: int
+    imagen_url: str | None = None
 
 
 class ProductoOut(ProductoCreate):
@@ -17,3 +18,4 @@ class ProductoOut(ProductoCreate):
 
     class Config:
         from_attributes = True
+

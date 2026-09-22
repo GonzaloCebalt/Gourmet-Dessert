@@ -1,4 +1,8 @@
 ﻿from fastapi import APIRouter, status, Depends, Response
+from fastapi import UploadFile, File, HTTPException
+import os
+import secrets
+from app.utils.archivos import parece_imagen
 from sqlalchemy.orm import Session
 from app.schemas import producto as schemas
 from app.services import productos as productos_service
@@ -69,3 +73,43 @@ async def update_stock(
     db.refresh(producto)
     return producto
 
+
+MAX_SIZE = 2 * 1024 * 1024 # 2 MB
+ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
+
+@router.post("/{producto_id}/imagen", response_model=schemas.ProductoOut)
+async def upload_imagen(
+    producto_id: int,
+    archivo: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user = Depends(require_admin)
+):
+    producto = db.query(models.Producto).filter(models.Producto.id == producto_id).first()
+    if not producto:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+
+    # 1. Extension (barato)
+    ext = os.path.splitext(archivo.filename)[1].lower()
+    if ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(status_code=415, detail="Formato no permitido")
+
+    # 2. Tamano
+    contenido = await archivo.read()
+    if len(contenido) > MAX_SIZE:
+        raise HTTPException(status_code=413, detail="El archivo no puede superar los 2 MB")
+
+    # 3. Firma (caro, despues de leer)
+    if not parece_imagen(contenido):
+        raise HTTPException(status_code=415, detail="El archivo no parece ser una imagen valida")
+
+    nuevo_nombre = f"{producto_id}-{secrets.token_hex(8)}{ext}"
+    ruta_guardado = f"uploads/productos/{nuevo_nombre}"
+    
+    with open(ruta_guardado, "wb") as f:
+        f.write(contenido)
+        
+    producto.imagen_url = f"/static/productos/{nuevo_nombre}"
+    db.commit()
+    db.refresh(producto)
+    
+    return producto

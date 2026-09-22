@@ -1,4 +1,5 @@
 ﻿from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -35,6 +36,8 @@ app.include_router(auth.router)
 app.include_router(pedidos.router)
 app.include_router(usuarios.router)
 
+app.mount('/static', StaticFiles(directory='uploads'), name='static')
+
 @app.get("/", summary="Bienvenida a la API", tags=["General"])
 async def root():
     return {
@@ -47,5 +50,6 @@ async def root():
 async def serve_frontend():
     index_path = os.path.join(os.path.dirname(__file__), "static", "index.html")
     return FileResponse(index_path)
+
 
 

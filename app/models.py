@@ -29,6 +29,7 @@ class Producto(Base):
     cuotas_valor = Column(Float)
     garantia_meses = Column(Integer)
     stock = Column(Integer)
+    imagen_url = Column(String, nullable=True)
 
 class Pedido(Base):
     __tablename__ = "pedidos"
@@ -66,3 +67,4 @@ class SolicitudRevocacion(Base):
 
     pedido = relationship("Pedido", back_populates="solicitud_revocacion")
     usuario = relationship("Usuario", back_populates="solicitudes")
+
