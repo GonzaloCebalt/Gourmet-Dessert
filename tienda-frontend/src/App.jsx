@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+﻿import { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
 import { getProductos, getMe } from "./services/api"
 import ProductCard from "./components/ProductCard"
@@ -81,9 +81,9 @@ function Catalogo({ usuario, onLogout }) {
         <div className="bg-[#FCE4EC] rounded-gourmet p-12 mb-12 flex flex-col md:flex-row items-center justify-between overflow-hidden relative">
           <div className="z-10 text-center md:text-left">
             <span className="uppercase tracking-[0.3em] text-[10px] font-bold text-[#3D2B1F]/60">Coleccion Premium 2024</span>
-            <h2 className="text-5xl font-bold mt-2 mb-6 max-w-md leading-tight">El arte de enganar al paladar.</h2>
+            <h2 className="text-5xl font-bold mt-2 mb-6 max-w-md leading-tight">El arte de engañar al paladar.</h2>
           </div>
-          <div className="text-[12rem] opacity-20 absolute -right-10 md:static md:opacity-100">🍰</div>
+          <div className="text-[12rem] opacity-20 absolute -right-10 md:static md:opacity-100">ðŸ°</div>
         </div>
 
                 {isBaja && (
@@ -100,8 +100,8 @@ function Catalogo({ usuario, onLogout }) {
           </div>
         </div>
 
-        {isLoading && <div className="text-center py-20"><div className="animate-spin text-4xl">🍯</div><p className="text-stone-400 mt-4 uppercase tracking-widest text-sm font-bold">Preparando delicias...</p></div>}
-        {error && <div className="bg-red-50 text-red-500 p-8 rounded-gourmet text-center border border-red-100"><p className="font-bold">⚠️ {error}</p></div>}
+        {isLoading && <div className="text-center py-20"><div className="animate-spin text-4xl">ðŸ¯</div><p className="text-stone-400 mt-4 uppercase tracking-widest text-sm font-bold">Preparando delicias...</p></div>}
+        {error && <div className="bg-red-50 text-red-500 p-8 rounded-gourmet text-center border border-red-100"><p className="font-bold">âš ï¸Â {error}</p></div>}
 
         {!isLoading && !error && (
           <>
@@ -167,5 +167,6 @@ function App() {
 }
 
 export default App;
+
 
 
