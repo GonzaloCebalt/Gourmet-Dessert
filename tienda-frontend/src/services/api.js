@@ -1,4 +1,4 @@
-﻿const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 function authHeaders() {
   const token = localStorage.getItem("access_token");
@@ -144,11 +144,10 @@ export async function subirImagen(productoId, archivo) {
 }
 
 export async function eliminarImagen(idProducto) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(${BASE_URL}/productos//imagen, {
+  const response = await fetch(`${BASE_URL}/productos/${idProducto}/imagen`, {
     method: 'DELETE',
-    headers: { 'Authorization': Bearer  }
+    headers: { ...authHeaders() },
   });
-  if (!res.ok) throw new Error('Error al eliminar imagen');
-  return res.json();
+  if (!response.ok) throw new Error('Error al eliminar imagen');
+  return response.json();
 }
