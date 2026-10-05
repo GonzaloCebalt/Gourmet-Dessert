@@ -142,3 +142,13 @@ export async function subirImagen(productoId, archivo) {
 
   return response.json();
 }
+
+export async function eliminarImagen(idProducto) {
+  const token = localStorage.getItem('token');
+  const res = await fetch(${BASE_URL}/productos//imagen, {
+    method: 'DELETE',
+    headers: { 'Authorization': Bearer  }
+  });
+  if (!res.ok) throw new Error('Error al eliminar imagen');
+  return res.json();
+}

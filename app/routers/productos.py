@@ -113,3 +113,20 @@ async def upload_imagen(
     db.refresh(producto)
     
     return producto
+
+@router.delete("/{id}/imagen", response_model=schemas.ProductoOut)
+def eliminar_imagen(
+    id: int, 
+    db: Session = Depends(get_db), 
+    admin: models.Usuario = Depends(get_current_user)
+):
+    require_admin(admin)
+    producto = db.query(models.Producto).filter(models.Producto.id == id).first()
+    if not producto:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    
+    # We could delete the physical file here if it's in /static/, but for now we just clear the DB
+    producto.imagen_url = None
+    db.commit()
+    db.refresh(producto)
+    return producto
