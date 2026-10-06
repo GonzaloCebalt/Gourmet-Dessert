@@ -83,7 +83,7 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
 
           {/* Badge en carrito */}
           {enCarrito > 0 && (
-            <div className="absolute top-3 right-3 z-10 px-2.5 py-1 bg-[#3D2B1F] text-[#D4A96A] text-[10px] font-bold rounded-full shadow">
+            <div className="absolute top-3 right-3 z-10 px-2.5 py-1 bg-[#3D2B1F] text-white text-[11px] font-bold rounded-full shadow">
               {enCarrito} en carrito
             </div>
           )}
@@ -123,17 +123,18 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
 
         {/* Contenido */}
         <div className="p-5 flex-1 flex flex-col">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-[#D4A96A] mb-1">Postre de Autor</p>
           <h3 className="text-base font-bold text-[#3D2B1F] mb-3 leading-tight">{nombre}</h3>
 
           {/* Stock en tiempo real */}
           <div className="mb-3">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-[10px] font-semibold text-[#8B6952] uppercase tracking-wide">
+            <div className="flex justify-between items-center mb-1.5 gap-2">
+              <span className="text-xs sm:text-sm font-bold text-[#3D2B1F] tracking-tight">
                 {sinStock ? "Sin stock" : `Disponible: ${stockDisponible}`}
               </span>
               {enCarrito > 0 && !sinStock && (
-                <span className="text-[10px] text-[#D4A96A] font-bold">{enCarrito} en tu carrito</span>
+                <span className="text-xs text-[#3D2B1F] font-extrabold bg-[#F3ECE6] border border-[#E4D7CC] px-2.5 py-0.5 rounded-lg shadow-sm">
+                  {enCarrito} en tu carrito
+                </span>
               )}
             </div>
             <div className="h-1.5 rounded-full bg-[#F2EBE6] overflow-hidden">
@@ -151,25 +152,25 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
           )}
 
           <div className="mt-auto pt-4 border-t border-[#F2EBE6]">
-            <p className="text-[10px] text-[#B89882] mb-2">{cuotas_cantidad}x de ${cuotas_valor.toLocaleString("es-AR")}</p>
+            <p className="text-xs font-semibold text-[#5C4333] mb-2">{cuotas_cantidad}x de ${cuotas_valor.toLocaleString("es-AR")}</p>
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold text-[#3D2B1F]">${precio_final.toLocaleString("es-AR")}</span>
 
               {enCarrito > 0 ? (
                 /* Control +/- cuando el producto ya está en el carrito */
-                <div className="flex items-center gap-1 bg-[#F9F5F0] rounded-2xl p-1 shadow-inner">
+                <div className="flex items-center gap-1.5 bg-[#F4EFEB] border border-[#E3D9CF] rounded-2xl p-1 shadow-sm">
                   <button
                     onClick={() => enCarrito === 1 ? quitar(id) : decrementar(id)}
-                    className="w-9 h-9 rounded-xl bg-white text-[#3D2B1F] font-bold text-lg shadow-sm hover:bg-red-50 hover:text-red-600 transition-all active:scale-90"
+                    className="w-9 h-9 rounded-xl bg-white border border-[#D8C7B8] text-[#3D2B1F] font-bold text-lg shadow-sm hover:bg-[#FDF8F3] hover:border-red-300 hover:text-red-600 transition-all active:scale-95 flex items-center justify-center"
                     title="Quitar uno"
                   >
                     &minus;
                   </button>
-                  <span className="w-8 text-center font-bold text-[#3D2B1F] text-sm tabular-nums">{enCarrito}</span>
+                  <span className="w-8 text-center font-extrabold text-[#3D2B1F] text-sm tabular-nums">{enCarrito}</span>
                   <button
                     onClick={handleAgregar}
                     disabled={llegueAlMax}
-                    className="w-9 h-9 rounded-xl bg-[#3D2B1F] text-white font-bold text-lg shadow-sm hover:bg-[#5a402e] transition-all active:scale-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="w-9 h-9 rounded-xl bg-[#3D2B1F] text-white font-bold text-lg shadow-sm hover:bg-[#5a402e] transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center"
                     title={llegueAlMax ? "Stock máximo alcanzado" : "Agregar uno más"}
                   >
                     +
