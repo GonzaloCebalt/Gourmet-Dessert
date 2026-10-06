@@ -174,7 +174,7 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
             >
               {"\uD83D\uDDD1"} Eliminar Foto
             </button>
-            {showImgUpload && (</button>
+            {showImgUpload && (
             
               <div className="bg-stone-50 border border-stone-200 p-3 rounded-xl mb-4 text-left">
                 <input 
@@ -221,7 +221,7 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
           </div>
         ) : (
           <div className="flex items-center justify-center gap-2 mb-2">
-            <p className={`text-xs font-semibold ${sinStock ? "text-red-400" : "text-stone-300"}`}>
+            <p className={`text-xs font-semibold ${sinStock ? "text-red-400" : "text-stone-500"}`}>
               {sinStock ? "Sin stock" : `Stock: ${stockActual}`}
             </p>
             {isAdmin && (
