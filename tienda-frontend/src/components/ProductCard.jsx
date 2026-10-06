@@ -1,6 +1,6 @@
 ﻿import { useState, useRef, useEffect } from "react";
 import { useCarrito } from "../context/CarritoContext";
-import { updateStock, subirImagen } from "../services/api";
+import { updateStock, subirImagen, eliminarImagen } from "../services/api";
 import { urlImagen } from "../utils/imagenes";
 
 const EMOJIS = ["\uD83C\uDF70","\uD83E\uDDC1","\uD83C\uDF6B","\uD83C\uDF6C","\uD83C\uDF6D","\uD83C\uDF6E","\uD83C\uDF6F","\uD83C\uDF82","\uD83C\uDF69","\uD83C\uDF6A","\uD83E\uDD67","\uD83C\uDF61","\uD83C\uDF67","\uD83C\uDF68","\uD83C\uDF66","\uD83E\uDD6E"];
@@ -74,6 +74,18 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
     }
   };
 
+    const handleEliminarImagen = async () => {
+    try {
+      setSubiendo(true);
+      const prodActualizado = await eliminarImagen(id);
+      if (onUpdateImagen) onUpdateImagen(null);
+      setShowImgUpload(false);
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setSubiendo(false);
+    }
+  };
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -155,7 +167,15 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
             <button onClick={() => setShowImgUpload(!showImgUpload)} className="text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-1 rounded-full font-bold hover:bg-indigo-100 transition mb-2">
               📷 Subir/Cambiar Foto
             </button>
-            {showImgUpload && (
+            <button 
+              onClick={handleEliminarImagen} 
+              disabled={subiendo || !imagen_url} 
+              className="text-[10px] bg-red-50 text-red-700 border border-red-200 px-3 py-1 rounded-full font-bold hover:bg-red-100 transition mb-2 ml-2 disabled:opacity-50"
+            >
+              {"\uD83D\uDDD1"} Eliminar Foto
+            </button>
+            {showImgUpload && (</button>
+            
               <div className="bg-stone-50 border border-stone-200 p-3 rounded-xl mb-4 text-left">
                 <input 
                   type="file" 
@@ -240,3 +260,4 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
     </div>
   );
 }
+
