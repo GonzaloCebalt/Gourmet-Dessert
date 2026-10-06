@@ -22,7 +22,7 @@ function emojiPara(nombre, id) {
 
 export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad, cuotas_valor, stock, imagen_url, usuario, onUpdateStock, onUpdateImagen }) {
   const emoji = emojiPara(nombre, id);
-  const { agregar, cantidadEnCarrito } = useCarrito();
+  const { agregar, cantidadEnCarrito, decrementar, quitar } = useCarrito();
   const [aviso, setAviso] = useState(false);
   const [stockActual, setStockActual] = useState(stock);
   const [imagenActual, setImagenActual] = useState(imagen_url);
@@ -150,21 +150,44 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
             </p>
           )}
 
-          {/* Precio y botón */}
           <div className="mt-auto pt-4 border-t border-[#F2EBE6]">
             <p className="text-[10px] text-[#B89882] mb-2">{cuotas_cantidad}x de ${cuotas_valor.toLocaleString("es-AR")}</p>
             <div className="flex items-center justify-between">
               <span className="text-2xl font-bold text-[#3D2B1F]">${precio_final.toLocaleString("es-AR")}</span>
-              <button
-                onClick={handleAgregar}
-                disabled={sinStock || llegueAlMax}
-                className="bg-[#3D2B1F] text-white p-3 rounded-2xl hover:bg-[#5a402e] hover:scale-105 transition-all shadow-md disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100 active:scale-95"
-                title={sinStock ? "Sin stock" : llegueAlMax ? "Stock máximo alcanzado" : "Agregar al carrito"}
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-              </button>
+
+              {enCarrito > 0 ? (
+                /* Control +/- cuando el producto ya está en el carrito */
+                <div className="flex items-center gap-1 bg-[#F9F5F0] rounded-2xl p-1 shadow-inner">
+                  <button
+                    onClick={() => enCarrito === 1 ? quitar(id) : decrementar(id)}
+                    className="w-9 h-9 rounded-xl bg-white text-[#3D2B1F] font-bold text-lg shadow-sm hover:bg-red-50 hover:text-red-600 transition-all active:scale-90"
+                    title="Quitar uno"
+                  >
+                    &minus;
+                  </button>
+                  <span className="w-8 text-center font-bold text-[#3D2B1F] text-sm tabular-nums">{enCarrito}</span>
+                  <button
+                    onClick={handleAgregar}
+                    disabled={llegueAlMax}
+                    className="w-9 h-9 rounded-xl bg-[#3D2B1F] text-white font-bold text-lg shadow-sm hover:bg-[#5a402e] transition-all active:scale-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                    title={llegueAlMax ? "Stock máximo alcanzado" : "Agregar uno más"}
+                  >
+                    +
+                  </button>
+                </div>
+              ) : (
+                /* Botón agregar simple cuando no hay nada en el carrito */
+                <button
+                  onClick={handleAgregar}
+                  disabled={sinStock}
+                  className="bg-[#3D2B1F] text-white p-3 rounded-2xl hover:bg-[#5a402e] hover:scale-105 transition-all shadow-md disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100 active:scale-95"
+                  title={sinStock ? "Sin stock" : "Agregar al carrito"}
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
         </div>
