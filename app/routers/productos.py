@@ -118,9 +118,8 @@ async def upload_imagen(
 def eliminar_imagen(
     id: int, 
     db: Session = Depends(get_db), 
-    admin: models.Usuario = Depends(get_current_user)
+    admin: models.Usuario = Depends(require_admin)
 ):
-    require_admin(admin)
     producto = db.query(models.Producto).filter(models.Producto.id == id).first()
     if not producto:
         raise HTTPException(status_code=404, detail="Producto no encontrado")
