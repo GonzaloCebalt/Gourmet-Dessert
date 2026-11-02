@@ -6,3 +6,6 @@ __pycache__/
 alembic.ini
 
 uploads/
+.neon
+node_modules/
+*.sql

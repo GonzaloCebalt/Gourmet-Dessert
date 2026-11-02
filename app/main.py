@@ -1,4 +1,4 @@
-﻿from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
@@ -32,16 +32,27 @@ app.add_middleware(
     expose_headers=["X-Total-Count"],
 )
 
+from fastapi.middleware.gzip import GZipMiddleware
+
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+class StaticConCache(StaticFiles):
+    async def get_response(self, path, scope):
+        respuesta = await super().get_response(path, scope)
+        if respuesta.status_code == 200:
+            respuesta.headers["Cache-Control"] = "public, max-age=2592000, immutable"
+        return respuesta
+
 app.include_router(productos.router)
 app.include_router(auth.router)
 app.include_router(pedidos.router)
 app.include_router(usuarios.router)
 
-# Archivos subidos en vivo (efimeros en Render - se pierden al reiniciar)
-app.mount("/static", StaticFiles(directory="uploads"), name="static")
+# Archivos subidos en vivo con encabezados de caché
+app.mount("/static", StaticConCache(directory="uploads"), name="static")
 
-# Imagenes de demo (vienen del repositorio, persisten en Render)
-app.mount("/demo", StaticFiles(directory="app/static/demo"), name="demo")
+# Imagenes de demo con encabezados de caché
+app.mount("/demo", StaticConCache(directory="app/static/demo"), name="demo")
 
 
 @app.get("/", summary="Bienvenida a la API", tags=["General"])
