@@ -2,11 +2,13 @@ import { useCarrito } from "../context/CarritoContext";
 import { crearPedido } from "../services/api";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useConectado } from "../hooks/useConectado";
 
 export default function Carrito() {
   const { items, incrementar, decrementar, quitar, vaciar, total } = useCarrito();
   const [enviando, setEnviando] = useState(false);
   const [mensaje, setMensaje] = useState(null);
+  const conectado = useConectado();
   const navigate = useNavigate();
 
   const confirmar = async () => {
@@ -87,9 +89,15 @@ export default function Carrito() {
 
       {mensaje && <div className="bg-red-50 text-red-500 border border-red-100 rounded-xl p-4 mb-4 font-semibold">{mensaje}</div>}
 
+      {!conectado && (
+        <p role="status" className="bg-amber-50 text-amber-800 border border-amber-200 rounded-xl p-3 mb-4 text-xs font-semibold text-center">
+          Podés mirar el catálogo, pero para comprar necesitás internet.
+        </p>
+      )}
+
       <button
         onClick={confirmar}
-        disabled={enviando}
+        disabled={!conectado || enviando}
         className="w-full bg-primary-brown text-white py-4 rounded-pill font-bold uppercase tracking-widest text-sm hover:bg-[#5a402e] transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {enviando ? "Confirmando..." : "Confirmar compra"}

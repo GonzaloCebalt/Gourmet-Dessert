@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { BrowserRouter, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom"
 import { getProductos, getMe } from "./services/api"
 import ProductCard from "./components/ProductCard"
@@ -141,6 +141,8 @@ function Catalogo({ usuario, onLogout }) {
   );
 }
 
+import ActualizacionDisponible from "./components/ActualizacionDisponible"
+
 function App() {
   const [usuario, setUsuario] = useState(null);
 
@@ -156,8 +158,11 @@ function App() {
   return (
     <CarritoProvider>
       <BrowserRouter>
+        <ActualizacionDisponible />
         <Routes>
-          <Route path="/" element={<Catalogo usuario={usuario} onLogout={onLogout} />} />`n          <Route path="/register" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Register /></>} />`n          <Route path="/login" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Login onLoginExitoso={() => getMe().then(setUsuario)} /></>} />
+          <Route path="/" element={<Catalogo usuario={usuario} onLogout={onLogout} />} />
+          <Route path="/register" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Register /></>} />
+          <Route path="/login" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Login onLoginExitoso={() => getMe().then(setUsuario)} /></>} />
           <Route path="/carrito" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Carrito /></>} />
           <Route path="/mis-pedidos" element={<RutaProtegida><><Navbar usuario={usuario} onLogout={onLogout} /><MisPedidos /></></RutaProtegida>} />
         </Routes>
