@@ -1,4 +1,4 @@
-﻿import secrets
+import secrets
 from datetime import datetime, timezone, timedelta
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
@@ -10,12 +10,13 @@ def generar_codigo() -> str:
     return f"ARR-{fecha}-{secrets.token_hex(3).upper()}"
 
 
-def revocar(db: Session, pedido_id: int) -> models.SolicitudRevocacion:
-    # 1. Es tuyo (404 si no existe o no te pertenece)
+def revocar(db: Session, pedido_id: int, usuario_id: int) -> models.SolicitudRevocacion:
+    # 1. Buscar el pedido y verificar que pertenece al usuario autenticado
+    #    (404 tanto si no existe como si no es tuyo — respuesta uniforme)
     pedido = db.query(models.Pedido).filter(
         models.Pedido.id == pedido_id,
         ).first()
-    if not pedido:
+    if not pedido or pedido.usuario_id != usuario_id:
         raise HTTPException(status_code=404, detail="Pedido no encontrado")
 
     # 2. No esta cancelado (409)
@@ -24,7 +25,11 @@ def revocar(db: Session, pedido_id: int) -> models.SolicitudRevocacion:
 
     # 3. Dentro de los 10 dias corridos (Ley 24.240, art. 34; Disposicion 954/2025)
     ahora = datetime.now(timezone.utc)
-    dias_transcurridos = (ahora - pedido.creado_en).days
+    # Compatibilidad: si creado_en no tiene timezone (SQLite en tests), lo tratamos como UTC
+    creado_en = pedido.creado_en
+    if creado_en.tzinfo is None:
+        creado_en = creado_en.replace(tzinfo=timezone.utc)
+    dias_transcurridos = (ahora - creado_en).days
     if dias_transcurridos > 10:
         raise HTTPException(
             status_code=409,

@@ -1,4 +1,4 @@
-﻿from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import datetime
@@ -48,5 +48,5 @@ def revocar_pedido(
     db: Session = Depends(get_db),
     current_user: models.Usuario = Depends(get_current_user)
 ):
-    return revocacion_service.revocar(db, pedido_id)
+    return revocacion_service.revocar(db, pedido_id, current_user.id)
 
