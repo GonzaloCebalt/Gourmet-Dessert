@@ -9,3 +9,6 @@ uploads/
 .neon
 node_modules/
 *.sql
+test.db
+.pytest_cache/
+
