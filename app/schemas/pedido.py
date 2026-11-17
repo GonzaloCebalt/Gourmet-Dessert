@@ -1,4 +1,4 @@
-﻿from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field
 from typing import List
 from decimal import Decimal
 from datetime import datetime
@@ -24,4 +24,5 @@ class PedidoOut(BaseModel):
     total: Decimal
     creado_en: datetime
     items: List[ItemOut]
+    usuario_nombre: str | None = None
     model_config = {"from_attributes": True}

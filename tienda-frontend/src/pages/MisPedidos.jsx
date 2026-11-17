@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { getMisPedidos, revocarPedido } from "../services/api";
 
@@ -10,13 +10,15 @@ function puedeRevocar(pedido) {
   return ms / 86400000 <= DIAS_PARA_REVOCAR;
 }
 
-export default function MisPedidos() {
+export default function MisPedidos({ usuario }) {
   const [pedidos, setPedidos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const [revocando, setRevocando] = useState(null); // id del pedido que se esta revocando
   const [codigosRevocacion, setCodigosRevocacion] = useState({}); // pedidoId -> codigo
   const [erroresRevocacion, setErroresRevocacion] = useState({});
+
+  const esAdmin = usuario?.rol === "admin";
 
   const cargarPedidos = useCallback(() => {
     setCargando(true);
@@ -51,7 +53,9 @@ export default function MisPedidos() {
   if (cargando) return (
     <div className="container mx-auto px-6 py-20 text-center">
       <div className="animate-spin text-4xl">🍯</div>
-      <p className="text-stone-400 mt-4 uppercase tracking-widest text-sm font-bold">Cargando tus pedidos...</p>
+      <p className="text-stone-400 mt-4 uppercase tracking-widest text-sm font-bold">
+        {esAdmin ? "Cargando registro de pedidos..." : "Cargando tus pedidos..."}
+      </p>
     </div>
   );
 
@@ -64,7 +68,9 @@ export default function MisPedidos() {
 
   if (pedidos.length === 0) return (
     <div className="container mx-auto px-6 py-20 text-center">
-      <p className="text-stone-400 text-xl mb-6">Todavia no hiciste ninguna compra.</p>
+      <p className="text-stone-400 text-xl mb-6">
+        {esAdmin ? "Todavía no se registró ningún pedido en la tienda." : "Todavia no hiciste ninguna compra."}
+      </p>
       <Link to="/" className="inline-block bg-primary-brown text-white px-8 py-3.5 rounded-pill font-bold text-sm uppercase tracking-widest hover:bg-[#5a402e] transition shadow-md">
         Ver catalogo
       </Link>
@@ -74,7 +80,16 @@ export default function MisPedidos() {
   return (
     <div className="container mx-auto px-6 py-10 max-w-2xl">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold text-[#3D2B1F]">Mis pedidos</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-[#3D2B1F]">
+            {esAdmin ? "Registro de pedidos" : "Mis pedidos"}
+          </h1>
+          {esAdmin && (
+            <p className="text-xs text-stone-500 font-medium mt-1">
+              Listado general de pedidos realizados por los clientes
+            </p>
+          )}
+        </div>
         <Link to="/" className="inline-flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-stone-700 px-5 py-2.5 rounded-pill font-bold text-xs uppercase tracking-widest transition">
           Seguir comprando
         </Link>
@@ -85,9 +100,16 @@ export default function MisPedidos() {
           <div key={pedido.id} className="bg-white rounded-2xl p-6 shadow-sm border border-stone-100">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-stone-400">Pedido #{pedido.id}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold uppercase tracking-widest text-stone-400">Pedido #{pedido.id}</span>
+                  {pedido.usuario_nombre && (
+                    <span className="bg-[#F2EBE6] text-[#3D2B1F] text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-[#E3D9CF]">
+                      👤 {pedido.usuario_nombre}
+                    </span>
+                  )}
+                </div>
                 <p className="font-bold text-xl text-primary-brown mt-1">${parseFloat(pedido.total).toLocaleString("es-AR")}</p>
-                <p className="text-xs text-stone-300 mt-1">{new Date(pedido.creado_en).toLocaleDateString("es-AR", { day: "2-digit", month: "long", year: "numeric" })}</p>
+                <p className="text-xs text-stone-400 mt-1">{new Date(pedido.creado_en).toLocaleDateString("es-AR", { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}</p>
               </div>
               <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${
                 pedido.estado === "cancelado" ? "bg-red-50 text-red-400" : "bg-[#FCE4EC] text-primary-brown"
@@ -121,8 +143,8 @@ export default function MisPedidos() {
               </div>
             )}
 
-            {/* Boton de arrepentimiento: solo si puede revocar */}
-            {puedeRevocar(pedido) && (
+            {/* Boton de arrepentimiento: solo si puede revocar Y NO ES ADMIN */}
+            {!esAdmin && puedeRevocar(pedido) && (
               <button
                 onClick={() => handleRevocar(pedido.id)}
                 disabled={revocando === pedido.id}

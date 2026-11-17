@@ -33,7 +33,9 @@ function Navbar({ usuario, onLogout }) {
                   {usuario.rol === 'admin' ? '\u{1F451} Admin' : '\u{1F464} Cliente'}
                 </span>
               </div>
-              <Link to="/mis-pedidos" className="font-semibold text-sm hover:text-stone-500 transition">Mis Pedidos</Link>
+              <Link to="/mis-pedidos" className="font-semibold text-sm hover:text-stone-500 transition">
+                {usuario.rol === 'admin' ? 'Registro de Pedidos' : 'Mis Pedidos'}
+              </Link>
               <button onClick={onLogout} className="font-semibold text-sm hover:text-stone-500 transition">Salir</button>
             </>
           ) : (
@@ -164,7 +166,7 @@ function App() {
           <Route path="/register" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Register /></>} />
           <Route path="/login" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Login onLoginExitoso={() => getMe().then(setUsuario)} /></>} />
           <Route path="/carrito" element={<><Navbar usuario={usuario} onLogout={onLogout} /><Carrito /></>} />
-          <Route path="/mis-pedidos" element={<RutaProtegida><><Navbar usuario={usuario} onLogout={onLogout} /><MisPedidos /></></RutaProtegida>} />
+          <Route path="/mis-pedidos" element={<RutaProtegida><><Navbar usuario={usuario} onLogout={onLogout} /><MisPedidos usuario={usuario} /></></RutaProtegida>} />
         </Routes>
       </BrowserRouter>
     </CarritoProvider>

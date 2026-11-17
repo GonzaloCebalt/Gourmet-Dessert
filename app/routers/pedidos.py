@@ -26,9 +26,17 @@ def checkout(datos: PedidoCreate, db: Session = Depends(get_db), current_user: m
 
 @router.get("/mios", response_model=List[PedidoOut])
 def mis_pedidos(db: Session = Depends(get_db), current_user: models.Usuario = Depends(get_current_user)):
-    return db.query(models.Pedido).filter(
-        models.Pedido.usuario_id == current_user.id
-    ).order_by(models.Pedido.creado_en.desc()).all()
+    if current_user.rol == "admin":
+        pedidos = db.query(models.Pedido).order_by(models.Pedido.creado_en.desc()).all()
+    else:
+        pedidos = db.query(models.Pedido).filter(
+            models.Pedido.usuario_id == current_user.id
+        ).order_by(models.Pedido.creado_en.desc()).all()
+
+    for p in pedidos:
+        if p.usuario:
+            p.usuario_nombre = p.usuario.nombre
+    return pedidos
 
 
 @router.get("/{pedido_id}", response_model=PedidoOut)
