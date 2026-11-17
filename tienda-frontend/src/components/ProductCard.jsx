@@ -72,9 +72,9 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
         />
       )}
 
-      <div className={`bg-white rounded-3xl flex flex-col shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#3D2B1F]/15 group overflow-hidden ${sinStock ? "opacity-70" : ""}`}>
+      <div className="bg-white rounded-3xl flex flex-col shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#3D2B1F]/15 group overflow-hidden">
 
-        {/* Imagen con overlay de "sin stock" */}
+        {/* Imagen con badge de "sin stock" */}
         <div className="relative">
           {/* Badge IRESM */}
           <div className="absolute top-3 left-3 z-10 px-2.5 py-1 bg-white/90 backdrop-blur text-[9px] font-bold rounded-full uppercase tracking-widest text-[#3D2B1F] shadow-sm">
@@ -99,8 +99,10 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
           )}
 
           {sinStock && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/20 rounded-t-3xl pointer-events-none">
-              <span className="bg-white text-[#3D2B1F] font-bold text-sm px-4 py-2 rounded-full shadow pointer-events-auto">Sin stock</span>
+            <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+              <span className="bg-[#3D2B1F]/90 backdrop-blur text-white font-bold text-xs px-3.5 py-1.5 rounded-full shadow border border-[#D4A96A]/40 pointer-events-auto">
+                Sin stock
+              </span>
             </div>
           )}
 
