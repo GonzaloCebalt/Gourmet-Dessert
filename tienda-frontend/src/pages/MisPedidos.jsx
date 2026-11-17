@@ -100,11 +100,11 @@ export default function MisPedidos({ usuario }) {
           <div key={pedido.id} className="bg-white rounded-2xl p-6 shadow-sm border border-stone-100">
             <div className="flex justify-between items-start mb-4">
               <div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
                   <span className="text-xs font-bold uppercase tracking-widest text-stone-400">Pedido #{pedido.id}</span>
                   {pedido.usuario_nombre && (
-                    <span className="bg-[#F2EBE6] text-[#3D2B1F] text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-[#E3D9CF]">
-                      👤 {pedido.usuario_nombre}
+                    <span className="bg-[#3D2B1F]/10 text-[#3D2B1F] text-xs font-bold px-3 py-0.5 rounded-full border border-[#3D2B1F]/20 flex items-center gap-1">
+                      <span>👤</span> Usuario: <strong className="text-[#3D2B1F]">{pedido.usuario_nombre}</strong>
                     </span>
                   )}
                 </div>
@@ -143,8 +143,8 @@ export default function MisPedidos({ usuario }) {
               </div>
             )}
 
-            {/* Boton de arrepentimiento: solo si puede revocar Y NO ES ADMIN */}
-            {!esAdmin && puedeRevocar(pedido) && (
+            {/* Boton de arrepentimiento: solo si el pedido es del usuario logueado (sea cliente o admin con sus propios pedidos) */}
+            {puedeRevocar(pedido) && (!usuario || pedido.usuario_id === usuario.id) && (
               <button
                 onClick={() => handleRevocar(pedido.id)}
                 disabled={revocando === pedido.id}

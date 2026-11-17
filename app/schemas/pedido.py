@@ -20,6 +20,7 @@ class ItemOut(BaseModel):
 
 class PedidoOut(BaseModel):
     id: int
+    usuario_id: int
     estado: str
     total: Decimal
     creado_en: datetime
