@@ -92,15 +92,15 @@ export default function ProductCard({ id, nombre, precio_final, cuotas_cantidad,
           {isAdmin && (
             <button
               onClick={() => setShowModal(true)}
-              className="absolute bottom-3 right-3 z-10 bg-[#3D2B1F]/80 backdrop-blur text-white text-[10px] font-bold px-3 py-1.5 rounded-full hover:bg-[#3D2B1F] transition shadow flex items-center gap-1"
+              className="absolute bottom-3 right-3 z-30 bg-[#3D2B1F]/90 backdrop-blur text-white text-[10px] font-bold px-3 py-1.5 rounded-full hover:bg-[#3D2B1F] transition shadow flex items-center gap-1 cursor-pointer"
             >
               {"\u270F\uFE0F"} Editar
             </button>
           )}
 
           {sinStock && (
-            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/20 rounded-t-3xl">
-              <span className="bg-white text-[#3D2B1F] font-bold text-sm px-4 py-2 rounded-full shadow">Sin stock</span>
+            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/20 rounded-t-3xl pointer-events-none">
+              <span className="bg-white text-[#3D2B1F] font-bold text-sm px-4 py-2 rounded-full shadow pointer-events-auto">Sin stock</span>
             </div>
           )}
 
